@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,15 +19,26 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class User implements Serializable, UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "USER_ID", length = 30, nullable = false)
     private Integer userId;
+    
+    @Column(name = "FIRSTNAME", length = 30, nullable = false)
     private String firstname;
+    
+    @Column(name = "LASTNAME", length = 30, nullable = false)
     private String lastname;
+    
+    @Column(name = "USERNAME", length = 30, nullable = false)
     private String username;
+    
+    @Column(name = "EMAIL", length = 30, nullable = false)
     private String email;
+    
+    @Column(name = "PASSWORD", length = 30, nullable = false)
     private String password;
     /*
     @Value("${property: defaultValue}")
-    private LocalDateTime createdAt;
+    private LocalDateTime CREATED_AT;
     */
     public Integer getUserId() {
         return userId;
