@@ -1,6 +1,7 @@
 package com.securiface.api.service;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,8 +22,11 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Objects.requireNonNull(username);
-        User user = userRepository.findUserWithName(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        return user;
+        Optional<User> userOp = userRepository.findUserWithName(username);
+        if(userOp.isPresent()) {
+        	return userOp.get();
+        } else {
+            return new User();
+        }
     }
 }
