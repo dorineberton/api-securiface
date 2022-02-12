@@ -2,6 +2,7 @@ package com.securiface.api.repository;
 
 import java.util.Optional;
 
+import javax.persistence.Id;
 import javax.transaction.Transactional;
 
 import org.springframework.data.repository.CrudRepository;
@@ -14,4 +15,5 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
   // public User loadUserByUsername(String username);
 	public Optional<User> findByEmail(String email);
+
 }

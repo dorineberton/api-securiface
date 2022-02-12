@@ -2,6 +2,9 @@ package com.securiface.api.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
+import javax.persistence.Id;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,6 +33,20 @@ public class UserService {
 			  // Password encryptedPassword = Password.encrypted(encoder.encode(password));
 			  return userRepository.save(user);
 	    }
+	  
+	  /*
+	    public Optional<User> findById(Long id) {
+	        return userRepository.findById(id);
+	    }
+	    */
+	  public User findById(Long id) {
+	        var val = userRepository.findById(id);
+
+	        if (!val.isPresent()) {
+	        	System.out.printf("Utilisateur inconnu avec id %d%n", id); 
+	        }    
+	        return val.get();
+	  }
 
 	  public List<User> findAll() {
 	        var it = userRepository.findAll();
