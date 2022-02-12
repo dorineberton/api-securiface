@@ -7,6 +7,8 @@ import java.util.Optional;
 import javax.persistence.Id;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.securiface.api.model.User;
@@ -21,16 +23,14 @@ public class UserService {
 	
 	  @Autowired
 	  private UserRepository userRepository;
-	  /*
-	  @Autowired
-	  PasswordEncoder passwordEncoder;
-	  */
+	  
 
 	  public User create(User user) {
 		  	userRepository.findByEmail(user.getEmail()).ifPresent(userSelected -> {
 			    throw new IllegalArgumentException("Un utilisateur existe déjà !");
 			  });
-			  // Password encryptedPassword = Password.encrypted(encoder.encode(password));
+		  	  PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+		  	  user.setPassword(encoder.encode(user.getPassword()));
 			  return userRepository.save(user);
 	    }
 	  
