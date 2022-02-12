@@ -45,6 +45,18 @@ public class UserController {
 	      System.out.println(id);
 	      return userService.findById(id);
 	  }
+	  
+	  @PostMapping("/update")
+	  @ResponseBody
+	  public String updateUser(@RequestBody User user) {
+		    try {
+		      userService.update(user);
+		    }
+		    catch (Exception ex) {
+		      return "Erreur création de l'utilisateur: " + ex.toString();
+		    }
+		    return "Utilisateur mis à jour";
+	  }
 	/*
 	 * @PostMapping("/request")
 public ResponseEntity postController(

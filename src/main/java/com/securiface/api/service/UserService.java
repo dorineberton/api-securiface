@@ -28,24 +28,26 @@ public class UserService {
 
 	  public User create(User user) {
 		  	userRepository.findByEmail(user.getEmail()).ifPresent(userSelected -> {
-			    throw new IllegalArgumentException("User with that name already exists!");
+			    throw new IllegalArgumentException("Un utilisateur existe déjà !");
 			  });
 			  // Password encryptedPassword = Password.encrypted(encoder.encode(password));
 			  return userRepository.save(user);
 	    }
 	  
-	  /*
-	    public Optional<User> findById(Long id) {
-	        return userRepository.findById(id);
-	    }
-	    */
 	  public User findById(Long id) {
 	        var val = userRepository.findById(id);
-
 	        if (!val.isPresent()) {
 	        	System.out.printf("Utilisateur inconnu avec id %d%n", id); 
 	        }    
 	        return val.get();
+	  }
+	  
+	  public User update(User user) {
+		  	boolean exists = userRepository.existsById(user.getId());
+		  	if(!exists) {
+		  		System.out.printf("Utilisateur inconnu avec id %d%n", user.getId()); 
+		  	}
+		  	return userRepository.save(user);
 	  }
 
 	  public List<User> findAll() {
