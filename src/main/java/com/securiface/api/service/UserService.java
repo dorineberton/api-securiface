@@ -58,6 +58,14 @@ public class UserService {
 			userRepository.delete(user);
 			return "utilisateur supprimé";
 	  }
+	  
+	  public String deleteAll(List<User> allUsers) {
+			for (User element : allUsers) {
+				delete(element);
+			}
+			return "Tous les utilisateurs ont été supprimés.";
+		}
+	  
 	  public List<User> findAll() {
 	        var it = userRepository.findAll();
 	        var users = new ArrayList<User>();

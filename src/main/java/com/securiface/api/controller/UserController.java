@@ -69,5 +69,17 @@ public class UserController {
 		    }
 		    return "Utilisateur supprimé";
 	  }
+	  
+	  @PostMapping("/deleteAll")
+	  @ResponseBody
+	  public String deleteUsers() {
+		    try {
+		      userService.deleteAll(this.getAllUsers());
+		    }
+		    catch (Exception ex) {
+		      return "Erreur suppression des utilisateurs";
+		    }
+		    return "Utilisateurs supprimés";
+	  }
 	
 }
