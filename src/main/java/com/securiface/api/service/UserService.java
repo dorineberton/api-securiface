@@ -50,6 +50,14 @@ public class UserService {
 		  	return userRepository.save(user);
 	  }
 
+	  public String delete(User user) {
+			boolean exists = userRepository.existsById(user.getId());
+			if(!exists) {
+				System.out.printf("Utilisateur inconnu avec id %d%n", user.getId()); 
+			}
+			userRepository.delete(user);
+			return "utilisateur supprimé";
+	  }
 	  public List<User> findAll() {
 	        var it = userRepository.findAll();
 	        var users = new ArrayList<User>();

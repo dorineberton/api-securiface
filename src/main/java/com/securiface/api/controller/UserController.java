@@ -57,14 +57,17 @@ public class UserController {
 		    }
 		    return "Utilisateur mis à jour";
 	  }
-	/*
-	 * @PostMapping("/request")
-public ResponseEntity postController(
-  @RequestBody LoginForm loginForm) {
- 
-    exampleService.fakeAuthenticate(loginForm);
-    return ResponseEntity.ok(HttpStatus.OK);
-}
-	 */
+	  
+	  @PostMapping("/delete")
+	  @ResponseBody
+	  public String deleteUser(@RequestBody User user) {
+		    try {
+		      userService.delete(user);
+		    }
+		    catch (Exception ex) {
+		      return "Erreur suppression de l'utilisateur: " + ex.toString();
+		    }
+		    return "Utilisateur supprimé";
+	  }
 	
 }
