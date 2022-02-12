@@ -22,11 +22,13 @@ public class UserService {
 	  @Autowired
 	  PasswordEncoder passwordEncoder;
 	  */
-	  public User create(String email, String password) {
-	        User user = new User();
-	        user.setEmail(email);
-	        user.setPassword(password);
-	        return userRepository.save(user);
+
+	  public User create(User user) {
+		  	userRepository.findByEmail(user.getEmail()).ifPresent(userSelected -> {
+			    throw new IllegalArgumentException("User with that name already exists!");
+			  });
+			  // Password encryptedPassword = Password.encrypted(encoder.encode(password));
+			  return userRepository.save(user);
 	    }
 
 	  public List<User> findAll() {

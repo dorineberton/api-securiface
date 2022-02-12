@@ -16,19 +16,19 @@ public class User {
   @Column(name="ID", updatable = false, nullable = false)
   private long id;
 
-@Column(name="FIRSTNAME", length= 30, nullable = false)
-  private String firstname = "";
+@Column(name="FIRSTNAME", length= 30)
+  private String firstname;
   
-  @Column(name="LASTNAME", length= 30, nullable = false)
-  private String lastname = "";
+  @Column(name="LASTNAME", length= 30)
+  private String lastname;
 
-  @Column(name="USERNAME", length= 30, nullable = false)
-  private String username = "";
+  @Column(name="USERNAME", length= 30)
+  private String username;
   
-  @Column(name="EMAIL", length= 30, nullable = false)
+  @Column(name="EMAIL", length= 30, nullable=false)
   private String email;
   
-  @Column(name="PASSWORD", length= 30, nullable = false)
+  @Column(name="PASSWORD", length= 30, nullable=false)
   private String password;
   
 
