@@ -1,16 +1,19 @@
 package com.securiface.api.service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.Id;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.securiface.api.model.Role;
 import com.securiface.api.model.User;
 import com.securiface.api.repository.UserRepository;
 
@@ -23,7 +26,6 @@ public class UserService {
 	
 	  @Autowired
 	  private UserRepository userRepository;
-	  
 
 	  public User create(User user) {
 		  	userRepository.findByEmail(user.getEmail()).ifPresent(userSelected -> {
@@ -34,12 +36,26 @@ public class UserService {
 			  return userRepository.save(user);
 	    }
 	  
-	  public User findById(Long id) {
+	  public Optional<User> findById(Long id) {
 	        var val = userRepository.findById(id);
 	        if (!val.isPresent()) {
-	        	System.out.printf("Utilisateur inconnu avec id %d%n", id); 
+	        	System.out.println("Utilisateur inconnu"); 
 	        }    
-	        return val.get();
+	        return Optional.ofNullable(val.get());
+	  }
+	  
+	  public Optional<User> findByEmailAndPassword(User user) {
+	       	var userSelected = userRepository.findByEmail(user.getEmail());
+	        if (userSelected.isPresent()) {
+	        	PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+	        	String passwordEncoded = encoder.encode(user.getPassword());
+	        	if (passwordEncoded == userSelected.get().getPassword()) {
+	        		return Optional.of(userSelected.get());
+	        	}
+	        } else {
+	        	System.out.println("Utilisateur inconnu");
+	        }
+			return Optional.ofNullable(userSelected.get());
 	  }
 	  
 	  public User update(User user) {
@@ -72,4 +88,5 @@ public class UserService {
 	        it.forEach(e -> users.add(e));
 	        return users;
 	    }
+
 }
