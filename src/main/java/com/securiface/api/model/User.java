@@ -1,5 +1,6 @@
 package com.securiface.api.model;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,7 +20,7 @@ import javax.persistence.JoinColumn;
 
 @Entity
 @Table(name = "USER")
-public class User {
+public class User implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

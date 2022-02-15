@@ -1,12 +1,7 @@
 package com.securiface.api.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,26 +12,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.securiface.api.model.Role;
 import com.securiface.api.model.User;
 import com.securiface.api.service.UserService;
-
-import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
-	private static final org.slf4j.Logger log = 
-		    org.slf4j.LoggerFactory.getLogger(User.class);
 	
 	@Autowired
 	private UserService userService;
 	
 	  @GetMapping("/")
 	  @ResponseBody
-	  public List<User> getAllUsers() {
+	  public ResponseEntity<?> getAllUsers() {
 		return userService.findAll();
 	  }
 
@@ -54,14 +42,14 @@ public class UserController {
 	  
 	  @GetMapping("/{id}")
 	  @ResponseBody
-	  public Optional<User> findOne(@PathVariable Long id) {
+	  public ResponseEntity<?> findOne(@PathVariable Long id) {
 	      System.out.println(id);
 	      return userService.findById(id);
 	  }
 	  
 	  @PostMapping("/login")
 	  @ResponseBody
-	  public Optional<User> login(@RequestBody User user) {
+	  public ResponseEntity<?> login(@RequestBody User user) {
 	      return userService.findByEmailAndPassword(user);
 	  }
 	  
@@ -96,11 +84,11 @@ public class UserController {
 		    return "Utilisateur mis à jour";
 	  }
 	  
-	  @DeleteMapping("/delete")
+	  @DeleteMapping("/delete/{id}")
 	  @ResponseBody
-	  public String deleteUser(@RequestBody User user) {
+	  public String deleteUser(@PathVariable Long id) {
 		    try {
-		      userService.delete(user);
+		      userService.delete(id);
 		    }
 		    catch (Exception ex) {
 		      return "Erreur suppression de l'utilisateur: " + ex.toString();
@@ -112,7 +100,7 @@ public class UserController {
 	  @ResponseBody
 	  public String deleteUsers() {
 		    try {
-		      userService.deleteAll(this.getAllUsers());
+		      userService.deleteAll();
 		    }
 		    catch (Exception ex) {
 		      return "Erreur suppression des utilisateurs";
