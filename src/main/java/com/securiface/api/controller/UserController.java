@@ -1,5 +1,10 @@
 package com.securiface.api.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,10 +23,10 @@ import com.securiface.api.service.UserService;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-	
+
 	@Autowired
 	private UserService userService;
-	
+	  
 	  @GetMapping("/")
 	  @ResponseBody
 	  public ResponseEntity<?> getAllUsers() {
@@ -49,7 +54,16 @@ public class UserController {
 	  
 	  @PostMapping("/login")
 	  @ResponseBody
-	  public ResponseEntity<?> login(@RequestBody User user) {
+	  public ResponseEntity<?> login(@RequestBody User user, HttpServletRequest request) {
+		  @SuppressWarnings("unchecked")
+			List<String> messages = (List<String>) request.getSession().getAttribute("MY_SESSION_MESSAGES");
+			if (messages == null) {
+				messages = new ArrayList<>();
+				request.getSession().setAttribute("MY_SESSION_MESSAGES", messages);
+			}
+			String email = user.getEmail();
+			messages.add(email);
+			request.getSession().setAttribute("MY_SESSION_MESSAGES", messages);
 	      return userService.findByEmailAndPassword(user);
 	  }
 	  
@@ -79,7 +93,7 @@ public class UserController {
 		      userService.update(user);
 		    }
 		    catch (Exception ex) {
-		      return "Erreur création de l'utilisateur: " + ex.toString();
+		      return "Erreur mise à jour du profil: " + ex.toString();
 		    }
 		    return "Utilisateur mis à jour";
 	  }
@@ -107,6 +121,5 @@ public class UserController {
 		    }
 		    return "Utilisateurs supprimés";
 	  }
-
-	
+	  
 }

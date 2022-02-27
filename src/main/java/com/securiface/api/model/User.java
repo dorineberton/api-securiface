@@ -42,10 +42,6 @@ public class User implements Serializable {
   @Column(name="PASSWORD", length= 120, nullable=false)
   private String password;
   
-  @ManyToMany(cascade = CascadeType.DETACH)
-	@JoinTable(name = "USER_ROLE", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "ROLE_ID"))
-	private Set<Role> roles= new HashSet<>();
-  
   public long getId() {
 	return id;
 }
@@ -93,11 +89,5 @@ public String getPassword() {
 public void setPassword(String password) {
 	this.password = password;
 }
-public Set<Role> getRoles() {
-	return roles;
-}
 
-public void setRoles(Set<Role> roles) {
-	this.roles = roles;
-}
 }
